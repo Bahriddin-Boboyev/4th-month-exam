@@ -28,7 +28,7 @@ function renderData(data) {
     <h3 class="best__products-title">${box}</h3>
     <img class="best__products-rite" src="./img/rate.svg" alt="img" />
     <div class="best__products-price-box">
-      <p class="best__products-price">$${item.price}</p>
+      <p id="${item.id}" class="best__products-price">$${item.price}</p>
       <del class="best__products-price-del">$${(
         (item.price * 100) /
         76

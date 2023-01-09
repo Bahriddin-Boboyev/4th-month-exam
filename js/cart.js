@@ -12,9 +12,11 @@ const korzinkaProductsItem = document.querySelector(".korzinka__products-item");
 
 let count = 1;
 let b;
-
+  let box2 ;
+let storage;
 function getRender() {
   let getItemData = JSON.parse(localStorage.getItem("item"));
+  storage = getItemData;
   korzinkaProducts.innerHTML = getItemData
     .map((item) => {
       let a = item;
@@ -25,11 +27,12 @@ function getRender() {
       } else {
         box = item.title;
       }
+      box2 =box;
 
       return `
 <li class="korzinka__products-item">
-<img class="del" src="./img/del-img.svg" alt="img">
-<img class="products-img" src="${item.image}" alt="img">
+<img id="${item.id}" class="del" src="./img/del-img.svg" alt="img">
+<img id="${item.id}" class="products-img" src="${item.image}" alt="img">
 <h4 class="korzinka__products-title">${box}</h4>
 <p class="korzinka__products-price">$${((item.price * 100) / 76).toFixed(2)}</p>
 <div class="korzinka__prd">
@@ -55,7 +58,41 @@ korzinkaProducts.addEventListener("click", (e) => {
 getRender();
 
 korzinkaProducts.addEventListener("click", (e) => {
-  if (e.target.classList == "del") {
-    localStorage.removeItem("item");
+  if (e.target.className.includes("del")) {
+   storage.map((item)=> {
+    if(e.target.id == item.id){
+      for(let i =0; i < storage.length; i++){
+        let splice = storage[i].id;
+       if(e.target.id == storage[i].id){
+        let qolgani = storage.splice(i,1);
+        if(e.target.id == splice){
+          let nima = localStorage.removeItem('item',qolgani.id);
+          console.log(nima);
+          korzinkaProducts.innerHTML = '';
+    
+          korzinkaProducts.innerHTML = storage.map(item => {
+            return `
+            <li class="korzinka__products-item">
+            <img id="${item.id}" class="del" src="./img/del-img.svg" alt="img">
+            <img id="${item.id}" class="products-img" src="${item.image}" alt="img">
+            <h4 class="korzinka__products-title">${box2}</h4>
+            <p class="korzinka__products-price">$${((item.price * 100) / 76).toFixed(2)}</p>
+            <div class="korzinka__prd">
+              <button class="products-minus">-</button><p class="products-price" id="products">${count}</p><button class="products-plus">+</button>
+            </div>
+            <p class="korzinka__products-price-2">$${item.price}</p>
+            <hr class="korzinka__hr">
+            </li>
+            `;
+                
+          }).join('');
+          getRender();
+
+        }
+       }
+      }
+    }
+
+   });
   }
 });
